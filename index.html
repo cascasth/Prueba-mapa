@@ -902,16 +902,20 @@ function mostrarFormulario() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
+try {
   paypal.HostedButtons({
-    hostedButtonId: "KCU4KJ4U3TFEE",
-    onApprove: function() {
-      mostrarFormulario();
-    }
+      hostedButtonId: "KCU4KJ4U3TFEE",
+      onApprove: function() {
+        mostrarFormulario();
+      }
   }).render("#paypal-container-KCU4KJ4U3TFEE");
+} catch(e) {
+  console.warn('PayPal no disponible en este entorno:', e);
+}
 
-  if (new URLSearchParams(window.location.search).get('pagado') === 'si') {
+if (new URLSearchParams(window.location.search).get('pagado') === 'si') {
     mostrarFormulario();
-  }
+}
 
 async function geocodificarCiudad(ciudad) {
   // Paso 1: ciudad → lat/lng usando OpenStreetMap (gratis, sin llave)
