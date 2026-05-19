@@ -1096,7 +1096,7 @@
     <div class="success-icon">✦</div>
     <h2 class="success-title" data-i18n="success-title">Tu mapa está<br><em style="color:var(--gold-soft)">en camino</em></h2>
     <p class="success-msg">
-      Gracias, <span class="success-name" id="success-name"></span>.<br><br>
+      <span id="success-gracias">Gracias</span>, <span class="success-name" id="success-name"></span>.<br><br>
       <span id="success-msg-template">Estamos tejiendo tu perfil a través de siete sistemas simbólicos. En menos de 5 minutos recibirás tu Mapa de Identidad en <span class="success-name" id="success-email"></span>.</span>
     </p>
     <button class="btn-otro" data-i18n="btn-otro" onclick="reiniciar()">Solicitar otra ficha →</button>
@@ -1278,6 +1278,8 @@ function mostrarFormulario() {
   function setLang(lang) {
     idiomaSeleccionado = lang;
     const t = i18n[lang];
+    const g = document.getElementById('success-gracias');
+if (g) g.textContent = lang === 'en' ? 'Thank you' : 'Gracias';
 
     // Botones de idioma (header y formulario)
     document.querySelectorAll('.lang-btn-es').forEach(b => b.classList.toggle('active', lang === 'es'));
