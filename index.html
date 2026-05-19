@@ -969,7 +969,7 @@ function mostrarFormulario() {
   }
 
   // --- Geocoding: ciudad → lat, lng, timezone ---
-  async function geocodificarCiudad(ciudad) {
+ async function geocodificarCiudad(ciudad, dia, mes, anio, hora, minutos) {
     const geoRes = await fetch(
       `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(ciudad)}&format=json&limit=1`,
       { headers: { 'User-Agent': 'MapaIdentidadNatal/1.0' } }
@@ -978,9 +978,12 @@ function mostrarFormulario() {
     if (!geoData || geoData.length === 0) throw new Error('ciudad_no_encontrada');
     const lat = parseFloat(geoData[0].lat);
     const lng = parseFloat(geoData[0].lon);
-    const tzRes = await fetch(`https://timeapi.io/api/TimeZone/coordinate?latitude=${lat}&longitude=${lng}`);
+    const fechaNac = new Date(Date.UTC(anio, mes - 1, dia, hora, minutos, 0));
+    const unixTimestamp = Math.floor(fechaNac.getTime() / 1000);
+    const TZ_KEY = '0VFM6NACW7MC';
+    const tzRes = await fetch(`https://api.timezonedb.com/v2.1/get-time-zone?key=${TZ_KEY}&format=json&by=position&lat=${lat}&lng=${lng}&time=${unixTimestamp}`);
     const tzData = await tzRes.json();
-    const timezone = tzData.currentUtcOffset.seconds / 3600;
+    const timezone = tzData.gmtOffset / 3600;
     return { lat, lng, timezone };
   }
 
@@ -1017,7 +1020,7 @@ function mostrarFormulario() {
 
     let coordenadas;
     try {
-      coordenadas = await geocodificarCiudad(ciudad);
+     coordenadas = await geocodificarCiudad(ciudad, dia, mes, anio, hora, minutos);
     } catch (geoErr) {
       btn.disabled = false;
       btn.classList.remove('loading');
