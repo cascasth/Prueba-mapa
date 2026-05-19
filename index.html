@@ -862,7 +862,7 @@
       </div>
       <div class="field">
         <label>Minutos</label>
-        <input type="number" id="minutos" min="0" max="59" placeholder="0">
+        <input type="text" id="minutos" placeholder="00" maxlength="2" pattern="[0-9]{1,2}">
       </div>
     </div>
 
@@ -1070,7 +1070,14 @@ function mostrarFormulario() {
       errBanner.textContent = 'La hora debe ser entre 0 y 23.';
       errBanner.classList.add('visible');
       return;
-    }
+}      
+      const minutosNum = parseInt(minutos);
+if (minutosNum < 0 || minutosNum > 59) {
+  errBanner.textContent = 'Los minutos deben ser entre 00 y 59.';
+  errBanner.classList.add('visible');
+  return;
+}
+    
     if (!ciudadLat || !ciudadLng) {
       errBanner.textContent = 'Por favor selecciona tu ciudad de la lista de sugerencias que aparece al escribir.';
       errBanner.classList.add('visible');
