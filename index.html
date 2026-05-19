@@ -1057,7 +1057,7 @@ function mostrarFormulario() {
     const mes        = parseInt(document.getElementById('mes').value);
     const anio       = parseInt(document.getElementById('anio').value);
     const hora       = parseInt(document.getElementById('hora').value);
-    const minutos    = parseInt(document.getElementById('minutos').value) || 0;
+    const minutos = document.getElementById('minutos').value.padStart(2, '0');
     const ciudad     = document.getElementById('ciudad').value.trim();
     const ascendente = document.getElementById('ascendente').value;
 
